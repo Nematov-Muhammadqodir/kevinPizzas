@@ -15,7 +15,7 @@ class AuthService {
       jwt.sign(
         payload,
         this.secretToken,
-        { expiresIn: duration },
+        { expiresIn: `${duration}h` },
         (err, token) => {
           if (err)
             reject(
@@ -27,6 +27,15 @@ class AuthService {
         }
       );
     });
+  }
+
+  public async checkAuth(token: string): Promise<Member> {
+    const result: Member = (await jwt.verify(
+      token,
+      this.secretToken
+    )) as Member;
+
+    return result;
   }
 }
 

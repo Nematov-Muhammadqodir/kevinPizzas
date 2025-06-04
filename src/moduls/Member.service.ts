@@ -1,4 +1,9 @@
-import { LoginInput, Member, MemberInput } from "../libs/types/member";
+import {
+  LoginInput,
+  Member,
+  MemberInput,
+  MemberUpdateInput,
+} from "../libs/types/member";
 import MemberModel from "../schema/Member.model";
 import * as bcryptjs from "bcryptjs";
 import { HttpCode, Message } from "../libs/Errors";
@@ -54,7 +59,45 @@ class MemberService {
     return result;
   }
 
-  //   public async processLogout()
+  public async getMemberDetail(input: Member): Promise<Member> {
+    const result = await this.memberModel.findOne({
+      _id: input._id,
+      memberNick: input.memberNick,
+    });
+    if (!result) throw new Errors(HttpCode.NOT_FOUND, Message.NO_DATA_FOUND);
+
+    return result;
+  }
+
+  public async updateMember(
+    member: Member,
+    input: MemberUpdateInput
+  ): Promise<Member> {
+    const result = await this.memberModel.findOneAndUpdate(
+      { _id: member._id },
+      input,
+      { new: true }
+    );
+
+    if (!result) throw new Errors(HttpCode.NOT_MODIFIED, Message.UPDATE_FAILED);
+
+    return result;
+  }
+
+  public async getTopUsers(): Promise<Member[]> {
+    const result = await this.memberModel
+      .find({
+        memberStatus: MemberStatus.ACTIVE,
+        memberPoints: { $gte: 1 },
+      })
+      .sort({ memberPoints: -1 })
+      .limit(3)
+      .exec();
+
+    if (!result) throw new Errors(HttpCode.NOT_MODIFIED, Message.UPDATE_FAILED);
+
+    return result;
+  }
 }
 
 export default MemberService;

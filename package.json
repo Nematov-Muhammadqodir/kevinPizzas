@@ -12,20 +12,28 @@
   "description": "",
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "connect-mongodb-session": "^3.1.1",
     "cookie-parser": "^1.4.7",
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
+    "express-session": "^1.17.3",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.2.9",
+    "multer": "^1.4.5-lts.1",
     "nodemon": "^3.1.10",
     "ts-node": "^10.9.1",
-    "typescript": "^5.2.2"
+    "typescript": "^5.2.2",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
+    "@types/connect-mongodb-session": "^2.4.8",
     "@types/cookie-parser": "^1.4.8",
     "@types/express": "^5.0.2",
+    "@types/express-session": "^1.18.1",
     "@types/jsonwebtoken": "^9.0.9",
-    "@types/mongoose": "^5.11.96"
+    "@types/mongoose": "^5.11.96",
+    "@types/multer": "^1.4.12",
+    "@types/uuid": "^10.0.0"
   }
 }
