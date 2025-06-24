@@ -3,8 +3,10 @@ import { Request, Response } from "express";
 import { T } from "../libs/types/common";
 import ProductService from "../moduls/Product.service";
 import { AdminRequest, ExtendedRequest } from "../libs/types/member";
-import { ProductInput } from "../libs/types/product";
+import { ProductInput, ProductInquery } from "../libs/types/product";
 import { MemberType } from "../libs/enums/member.enum";
+import { OrderInquery } from "../libs/types/order";
+import { ProductCollection } from "../libs/enums/product.enum";
 
 const productService = new ProductService();
 const productController: T = {};
@@ -37,7 +39,20 @@ productController.createNewProduct = async (
 productController.getAllProducts = async (req: AdminRequest, res: Response) => {
   try {
     console.log("getAllProducts");
-    const result = await productService.getAllProducts();
+    const { limit, page, order, productCollection, search } = req.query;
+
+    const inquery: ProductInquery = {
+      limit: Number(limit),
+      page: Number(page),
+      order: String(order),
+    };
+
+    if (productCollection)
+      inquery.productCollection = productCollection as ProductCollection;
+
+    if (search) inquery.search = String(search);
+    console.log(inquery);
+    const result = await productService.getAllProducts(inquery);
     res.status(HttpCode.OK).json(result);
   } catch (err) {
     console.log("Error, getAllProducts", err);

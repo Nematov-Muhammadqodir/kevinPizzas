@@ -2,12 +2,13 @@ import { shapeIntoMongooseObjectId } from "../libs/config";
 import { ProductCollection, ProductStatus } from "../libs/enums/product.enum";
 import { ViewGroup } from "../libs/enums/view.enum";
 import Errors, { HttpCode, Message } from "../libs/Errors";
-import { Product, ProductInput } from "../libs/types/product";
+import { Product, ProductInput, ProductInquery } from "../libs/types/product";
 import { ViewInput } from "../libs/types/view";
 import ProductModel from "../schema/Product.model";
 import { ObjectId } from "mongoose";
 import ViewService from "./View.service";
 import MemberModel from "../schema/Member.model";
+import { T } from "../libs/types/common";
 class ProductService {
   private readonly productModel;
   public viewService;
@@ -27,10 +28,30 @@ class ProductService {
     }
   }
 
-  public async getAllProducts(): Promise<Product[]> {
+  public async getAllProducts(inquery: ProductInquery): Promise<Product[]> {
+    console.log("getAllProducts");
+    const match: T = { productStatus: ProductStatus.PAUSE };
+    if (inquery.productCollection) {
+      match.productCollection = inquery.productCollection;
+    }
+
+    if (inquery.search) {
+      match.productName = { $regex: new RegExp(inquery.search, "i") };
+    }
+
+    const sort: T =
+      inquery.order === "productPrice"
+        ? { [inquery.order]: 1 }
+        : { [inquery.order]: -1 };
     try {
-      console.log("getAllProducts");
-      const result = await this.productModel.find();
+      const result = await this.productModel
+        .aggregate([
+          { $match: match },
+          { $sort: sort },
+          { $skip: (inquery.page * 1 - 1) * inquery.limit },
+          { $limit: inquery.limit * 1 },
+        ])
+        .exec();
       return result;
     } catch (err) {
       console.log("Error, getAllProducts", err);
