@@ -2,7 +2,12 @@ import { shapeIntoMongooseObjectId } from "../libs/config";
 import { ProductCollection, ProductStatus } from "../libs/enums/product.enum";
 import { ViewGroup } from "../libs/enums/view.enum";
 import Errors, { HttpCode, Message } from "../libs/Errors";
-import { Product, ProductInput, ProductInquery } from "../libs/types/product";
+import {
+  Product,
+  ProductInput,
+  ProductInquery,
+  ProductUpdateInput,
+} from "../libs/types/product";
 import { ViewInput } from "../libs/types/view";
 import ProductModel from "../schema/Product.model";
 import { ObjectId } from "mongoose";
@@ -26,6 +31,20 @@ class ProductService {
       console.log("Error, createNewProduct", err);
       throw new Errors(HttpCode.INTERNAL_SERVER_ERROR, Message.CREATE_FAILED);
     }
+  }
+
+  public async updateChosenProduct(
+    id: string,
+    input: ProductUpdateInput
+  ): Promise<Product> {
+    //id=>ObjectId
+    id = shapeIntoMongooseObjectId(id);
+    const result = await this.productModel
+      .findOneAndUpdate({ _id: id }, input, { new: true })
+      .exec();
+    if (!result) throw new Errors(HttpCode.NOT_MODIFIED, Message.UPDATE_FAILED);
+
+    return result;
   }
 
   public async getAllProducts(inquery: ProductInquery): Promise<Product[]> {

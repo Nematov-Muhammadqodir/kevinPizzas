@@ -36,15 +36,33 @@ productController.createNewProduct = async (
   }
 };
 
+productController.updateChosenProduct = async (req: Request, res: Response) => {
+  try {
+    console.log("updateChosenProduct");
+    const id = req.params.id;
+    console.log("updateProduct body:", req.body);
+    const result = await productService.updateChosenProduct(id, req.body);
+    res.status(HttpCode.OK).json({ data: result });
+  } catch (err) {
+    if (err instanceof Errors) res.status(err.code).json(err);
+    else res.status(Errors.standard.code).json(Errors.standard);
+  }
+};
+
 productController.getAllProducts = async (req: AdminRequest, res: Response) => {
   try {
     console.log("getAllProducts");
     const { limit, page, order, productCollection, search } = req.query;
 
+    // const inquery: ProductInquery = {
+    //   limit: Number(limit),
+    //   page: Number(page),
+    //   order: String(order),
+    // };
     const inquery: ProductInquery = {
-      limit: Number(limit),
-      page: Number(page),
-      order: String(order),
+      limit: 10,
+      page: 1,
+      order: "createdAt",
     };
 
     if (productCollection)
@@ -52,8 +70,9 @@ productController.getAllProducts = async (req: AdminRequest, res: Response) => {
 
     if (search) inquery.search = String(search);
     console.log(inquery);
-    const result = await productService.getAllProducts(inquery);
-    res.status(HttpCode.OK).json(result);
+    const data = await productService.getAllProducts(inquery);
+    console.log("data", data);
+    res.render("products", { products: data });
   } catch (err) {
     console.log("Error, getAllProducts", err);
     if (err instanceof Errors) res.status(err.code).json(err);
@@ -71,6 +90,41 @@ productController.getProduct = async (req: ExtendedRequest, res: Response) => {
     res.status(HttpCode.OK).json(result);
   } catch (err) {
     console.log("Error, getProduct", err);
+    if (err instanceof Errors) res.status(err.code).json(err);
+    else res.status(Errors.standard.code).json(Errors.standard);
+  }
+};
+
+//USER
+productController.getAllUserProducts = async (
+  req: AdminRequest,
+  res: Response
+) => {
+  try {
+    console.log("getAllProducts");
+    const { limit, page, order, productCollection, search } = req.query;
+
+    // const inquery: ProductInquery = {
+    //   limit: Number(limit),
+    //   page: Number(page),
+    //   order: String(order),
+    // };
+    const inquery: ProductInquery = {
+      limit: 10,
+      page: 1,
+      order: "createdAt",
+    };
+
+    if (productCollection)
+      inquery.productCollection = productCollection as ProductCollection;
+
+    if (search) inquery.search = String(search);
+    console.log(inquery);
+    const data = await productService.getAllProducts(inquery);
+    console.log("data", data);
+    res.status(HttpCode.OK).json(data);
+  } catch (err) {
+    console.log("Error, getAllProducts", err);
     if (err instanceof Errors) res.status(err.code).json(err);
     else res.status(Errors.standard.code).json(Errors.standard);
   }

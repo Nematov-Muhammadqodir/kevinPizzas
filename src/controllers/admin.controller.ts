@@ -15,6 +15,37 @@ import { NextFunction } from "connect";
 const adminService = new AdminService();
 const adminController: T = {};
 
+adminController.goHome = (req: Request, res: Response) => {
+  try {
+    console.log("goHome");
+    res.render("home");
+  } catch (error) {
+    console.log("Error, goHome", error);
+    res.redirect("/admin");
+  }
+};
+
+adminController.getSignup = (req: Request, res: Response) => {
+  try {
+    console.log("getSignup");
+    res.render("signup");
+    //send | json | redirect | end
+  } catch (err) {
+    console.log("Error, getSignup", err);
+    res.redirect("/admin");
+  }
+};
+
+adminController.getLogin = (req: Request, res: Response) => {
+  try {
+    console.log("getLogin");
+    res.render("login");
+  } catch (err) {
+    console.log("Error, getLogin", err);
+    res.redirect("/admin");
+  }
+};
+
 adminController.signup = async (req: AdminRequest, res: Response) => {
   try {
     console.log("signup");
@@ -44,7 +75,7 @@ adminController.login = async (req: AdminRequest, res: Response) => {
     const result = await adminService.login(loginInput);
     req.session.member = result;
     req.session.save(() => {
-      res.status(HttpCode.OK).json(result);
+      res.redirect("/admin/product/all");
     });
   } catch (err) {
     console.log("Error, signup", err);
@@ -59,7 +90,7 @@ adminController.logout = async (req: AdminRequest, res: Response) => {
 
     res.clearCookie("connect.sid");
     req.session.destroy(() => {
-      res.send({ adminLogout: true });
+      res.redirect("/admin");
     });
   } catch (err) {
     console.log("Error, logout", err);

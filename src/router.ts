@@ -39,7 +39,7 @@ router.get(
 );
 
 //^ PRODUCTS
-router.get("/product/all", productController.getAllProducts);
+router.get("/product/all", productController.getAllUserProducts);
 
 router.get(
   "/product/:productId",

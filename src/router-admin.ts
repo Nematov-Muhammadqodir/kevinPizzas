@@ -4,21 +4,33 @@ import productController from "./controllers/product.controller";
 import makeUploader from "./libs/utils/uploader";
 const routerAdmin = express.Router();
 
-routerAdmin.post(
-  "/signup",
-  makeUploader("admin").single("memberImage"),
-  adminController.signup
-);
+routerAdmin
+  .get("/signup", adminController.getSignup)
+  .post(
+    "/signup",
+    makeUploader("admin").single("memberImage"),
+    adminController.signup
+  );
 
-routerAdmin.post(
-  "/login",
-  makeUploader("admin").single("memberImage"),
-  adminController.login
-);
+routerAdmin.get("/", adminController.goHome);
+
+routerAdmin
+  .get("/login", adminController.getLogin)
+  .post(
+    "/login",
+    makeUploader("admin").single("memberImage"),
+    adminController.login
+  );
 
 routerAdmin.get("/logout", adminController.logout);
 
 //PRODUCTS
+
+routerAdmin.get(
+  "/product/all",
+  adminController.verifyAdmin,
+  productController.getAllProducts
+);
 
 routerAdmin.post(
   "/product/create",
@@ -27,12 +39,11 @@ routerAdmin.post(
   productController.createNewProduct
 );
 
-routerAdmin.get(
-  "/product/all",
+routerAdmin.post(
+  "/product/:id",
   adminController.verifyAdmin,
-  productController.getAllProducts
+  productController.updateChosenProduct
 );
-
 //!SHU YERDA UPDATE CHOSEN PRODUCT MANTIG'INI YARATISHIM MUMKIN
 
 //USERS
