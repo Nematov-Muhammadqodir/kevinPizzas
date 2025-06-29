@@ -12,11 +12,14 @@ $(function () {
         memberStatus: memberStatus,
       })
       .then((response) => {
+        console.log("response", response.data);
         const result = response.data;
-        if (result.data) {
-          console.log("User updated!");
+        if (result) {
+          console.log("User updated!", result);
           $(".member-status").blur();
+          alert("User updated!");
         } else {
+          console.log(err);
           alert("User update failed!");
         }
       })

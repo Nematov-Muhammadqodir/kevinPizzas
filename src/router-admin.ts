@@ -56,7 +56,6 @@ routerAdmin.get(
 routerAdmin.post(
   "/user/edit",
   adminController.verifyAdmin,
-  makeUploader("members").single("memberImage"),
   adminController.updateChosenUser
 );
 

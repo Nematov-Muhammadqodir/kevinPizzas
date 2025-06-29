@@ -17,18 +17,19 @@ productController.createNewProduct = async (
 ) => {
   try {
     console.log("createNewProduct");
-    if (req.session.member.memberType !== MemberType.ADMIN)
-      throw new Errors(HttpCode.BAD_REQUEST, Message.SOMETHING_WENT_WRONG);
+    console.log("req.body1", req.body);
 
     if (!req.files?.length)
       throw new Errors(HttpCode.BAD_REQUEST, Message.CREATE_FAILED);
-
+    console.log("req.body", req.body);
     const productInput: ProductInput = req.body;
     productInput.productImages = req.files.map((file) => {
       return file.path;
     });
-    const result = await productService.createNewProduct(productInput);
-    res.status(HttpCode.OK).json(result);
+    await productService.createNewProduct(productInput);
+    res.send(
+      `<script> alert("Successful creation!"); window.location.replace("/admin/product/all") </script>`
+    );
   } catch (err) {
     console.log("Error, createNewProduct", err);
     if (err instanceof Errors) res.status(err.code).json(err);

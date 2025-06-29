@@ -105,7 +105,7 @@ adminController.getUsers = async (req: AdminRequest, res: Response) => {
     if (req.session.member.memberType !== MemberType.ADMIN)
       throw new Errors(HttpCode.BAD_REQUEST, Message.SOMETHING_WENT_WRONG);
     const result = await adminService.getUsers();
-    res.status(HttpCode.OK).json(result);
+    res.render("users", { users: result });
   } catch (err) {
     console.log("Error, logout", err);
     if (err instanceof Errors) res.status(err.code).json(err);
@@ -113,11 +113,10 @@ adminController.getUsers = async (req: AdminRequest, res: Response) => {
   }
 };
 
-adminController.updateChosenUser = async (req: AdminRequest, res: Response) => {
+adminController.updateChosenUser = async (req: Request, res: Response) => {
   try {
     console.log("updateChosenUser");
     const input = req.body;
-    if (req.file) input.memberImage = req.file.path;
     const result = await adminService.updateChosenUser(input);
     res.status(HttpCode.OK).json(result);
   } catch (err) {

@@ -1,3 +1,9 @@
+body {
+  margin: 0;
+  /* overflow: hidden; */
+  background: transparent; /* let SVG show */
+}
+
 .products-container {
   position: relative;
   width: auto;
@@ -7,6 +13,8 @@
   flex-direction: column;
   align-items: center;
   background: linear-gradient(-45deg, #110303bf, #e37813, #011c1aba, #968383);
+  background: transparent; /* No opaque background */
+  z-index: 1;
 }
 
 .products-container a {
@@ -29,7 +37,17 @@
   color: #efefee;
   font-size: 40px;
   font-family: monospace;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
 }
+
+.products-container .navigation-menu:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+}
+/** =================== */
 
 .products-container .restaurant-menu-frame {
   position: relative;
@@ -51,28 +69,49 @@
   flex-direction: column;
   align-items: center;
 }
+/* ================== */
+.products-container .navigation-menu {
+  position: absolute;
+  z-index: 10000;
+  top: 1%;
+  color: #efefee;
+  font-size: 40px;
+  font-family: monospace;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(4px);
+  padding: 10px 20px;
+  transition: all 0.3s ease;
+}
+
+.products-container .navigation-menu:hover {
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.3);
+}
 
 .products-container .board .dishes-table {
   position: relative;
   width: 100%;
-  height: auto;
+  max-width: 1200px;
   margin-top: 30px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(4px);
+  transition: all 0.3s ease;
 }
 
-.products-container .board .dish-container {
-  position: relative;
-  margin-top: 20px;
-  width: 100%;
-  height: auto;
-
-  /* TODO: UNCOMMENT */
-  display: none;
-  flex-direction: column;
-  align-items: center;
+.products-container .board .dishes-table:hover {
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+  background: rgba(255, 255, 255, 0.95);
 }
+
+/* =================== */
 
 .products-container .new-dish-txt {
   font-family: "Source Serif Pro";
@@ -365,3 +404,5 @@ table th {
 .products-container .slider.round:before {
   border-radius: 50%;
 }
+
+/* animation */

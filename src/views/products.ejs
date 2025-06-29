@@ -3,6 +3,13 @@
 <link rel="stylesheet" type="text/css" href="/css/products.css" />
 
 <body>
+  <svg
+  id="harmonics"
+  style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: -1; background-color: #145;"
+  viewBox="0 0 100 20"
+  xmlns="http://www.w3.org/2000/svg"
+></svg>
+
   <div class="products-container">
     <div class="navigation-menu">
       <ul class="nav justify-content-center">
@@ -28,7 +35,7 @@
     <div class="restaurant-menu-frame">
       <div class="board">
         <div class="dishes-table">
-          <span class="new-dish-txt" style="margin-bottom: 30px">
+          <span class="new-dish-txt" style="margin-bottom: 30px; color:#e3c08d">
             RESTAURANT MENU
           </span>
           <table class="table table-bordered table-hover">
@@ -76,9 +83,7 @@
             class="long-input"
             style="align-items: flex-end; margin-bottom: 25px"
           >
-            <button class="btn btn-primary" id="process-btn">
-              New Product
-            </button>
+           
           </div>
         </div>
 
@@ -89,6 +94,7 @@
           method="POST"
           class="dish-container"
           enctype="multipart/form-data"
+          style="margin-top: 50px;"
         >
           <div class="long-input" style="display: flex; align-items: center">
             <span class="new-dish-txt">NEW PRODUCT DETAIL</span>
@@ -146,7 +152,7 @@
               <label>Dish Volume</label>
               <select class="product-size" name="productSize">
                 <option value="SMALL">Small</option>
-                <option value="NORMAL" selected>Normal</option>
+                <option value="MEDIUM" selected>Medium</option>
                 <option value="LARGE">Large</option>
                 <option value="SET">Set</option>
               </select>
@@ -157,8 +163,6 @@
               <select class="product-volume" name="productVolume">
                 <option value="0.5">0,5 liters</option>
                 <option value="1" selected>1 liters</option>
-                <option value="1.2">1,2 liters</option>
-                <option value="1.5">1,5 liters</option>
                 <option value="2">2 liters</option>
               </select>
             </div>
@@ -166,6 +170,10 @@
           <div class="long-input">
             <label>Product Description</label>
             <textarea name="productDesc" class="product-desc"></textarea>
+          </div>
+          <div class="long-input">
+            <label>Product Ingredients</label>
+            <textarea name="productIngredients" class="product-inredients"></textarea>
           </div>
 
 <!-- PRODUCT IMAGES: START -->
@@ -242,6 +250,7 @@
   </div>
 
   <script type="text/javascript" src="/js/products.js"></script>
+ 
 </body>
 
 <%- include('includes/footer') %>

@@ -49,7 +49,7 @@ class ProductService {
 
   public async getAllProducts(inquery: ProductInquery): Promise<Product[]> {
     console.log("getAllProducts");
-    const match: T = { productStatus: ProductStatus.PAUSE };
+    const match: T = {};
     if (inquery.productCollection) {
       match.productCollection = inquery.productCollection;
     }

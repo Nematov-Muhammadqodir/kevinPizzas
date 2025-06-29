@@ -66,7 +66,6 @@ class AdminService {
   public async getUsers(): Promise<Member[]> {
     console.log("service getUsers");
     const result = await this.memberModel.find({
-      memberStatus: MemberStatus.ACTIVE,
       memberType: MemberType.USER,
     });
     if (!result) throw new Errors(HttpCode.NOT_FOUND, Message.NO_DATA_FOUND);
@@ -78,9 +77,9 @@ class AdminService {
     memberInput: MemberUpdateInput
   ): Promise<Member> {
     console.log("service: updateChosenUser");
-    const memberId = shapeIntoMongooseObjectId(memberInput._id);
+    memberInput._id = shapeIntoMongooseObjectId(memberInput._id);
     const result = await this.memberModel
-      .findByIdAndUpdate(memberId, memberInput, { new: true })
+      .findByIdAndUpdate({ _id: memberInput._id }, memberInput, { new: true })
       .exec();
 
     if (!result) throw new Errors(HttpCode.NOT_MODIFIED, Message.UPDATE_FAILED);

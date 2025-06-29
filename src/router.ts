@@ -25,6 +25,8 @@ router.get(
   memberController.getMemberDetail
 );
 
+router.get("/member/all", memberController.getAllUsers);
+
 router.post(
   "/member/update",
   memberController.verifyAuth,

@@ -69,6 +69,17 @@ class MemberService {
     return result;
   }
 
+  public async getAllUsers(): Promise<Member[]> {
+    console.log("service getUsers");
+    const result = await this.memberModel.find({
+      memberStatus: MemberStatus.ACTIVE,
+      memberType: MemberType.USER,
+    });
+    if (!result) throw new Errors(HttpCode.NOT_FOUND, Message.NO_DATA_FOUND);
+
+    return result;
+  }
+
   public async updateMember(
     member: Member,
     input: MemberUpdateInput
