@@ -3,6 +3,12 @@
 <link rel="stylesheet" type="text/css" href="/css/users.css" />
 
 <body>
+  <svg
+  id="harmonics"
+  style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: -1; background-color: #145;"
+  viewBox="0 0 100 20"
+  xmlns="http://www.w3.org/2000/svg"
+></svg>
   <div class="users-container">
     <% if(!member) { %>
     <div class="navigation-menu">
@@ -45,13 +51,13 @@
       </ul>
     </div>
 
-    <div class="users-frame">
-      <div class="board">
-        <div class="user-table">
+    <div class="users-frame" style="margin-top: 70px; border-radius: 10px;">
+      <div class="board" style="border-radius: 10px;">
+        <div class="user-table" style="border-radius: 10px;">
           <span class="header-name" style="margin-bottom: 30px"
             >All Users List</span
           >
-          <table class="table table-hover table-sm">
+          <table class="table table-hover table-sm" style="border-radius: 20px;" >
             <thead class="thead-light">
               <tr class="thead-light">
                 <th scope="col">No</th>
@@ -62,7 +68,7 @@
             </thead>
             <!--  LOOP PRODUCTS: START  -->
             <% users.map((user,key)=>{%>
-            <tbody style="background: white">
+            <tbody style="background: white; border-radius: 10px;">
               <td><%= key+1 %></td>
               <td><%= user.memberNick %></td>
               <td><%= user.memberPhone %></td>

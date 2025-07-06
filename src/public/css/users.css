@@ -7,7 +7,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: linear-gradient(-45deg, #110303bf, #e37813, #011c1aba, #968383);
+  /* background: linear-gradient(-45deg, #110303bf, #e37813, #011c1aba, #968383); */
+  background: transparent; /* No opaque background */
 }
 
 .users-container a {
@@ -23,6 +24,16 @@
   color: #898071;
 }
 
+/* .users-container .navigation-menu {
+  position: absolute;
+  z-index: 10000;
+  top: 1%;
+  color: #efefee;
+  font-size: 40px;
+  font-family: monospace;
+} */
+
+/* ================== */
 .users-container .navigation-menu {
   position: absolute;
   z-index: 10000;
@@ -30,7 +41,41 @@
   color: #efefee;
   font-size: 40px;
   font-family: monospace;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(4px);
+  padding: 10px 20px;
+  transition: all 0.3s ease;
 }
+
+.users-container .navigation-menu:hover {
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.users-container .board .dishes-table {
+  position: relative;
+  width: 100%;
+  max-width: 1200px;
+  margin-top: 30px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(4px);
+  transition: all 0.3s ease;
+}
+
+.users-container .board .dishes-table:hover {
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+  background: rgba(255, 255, 255, 0.95);
+}
+
+/* =================== */
 
 .users-container .users-frame {
   position: relative;

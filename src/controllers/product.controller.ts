@@ -105,15 +105,10 @@ productController.getAllUserProducts = async (
     console.log("getAllProducts");
     const { limit, page, order, productCollection, search } = req.query;
 
-    // const inquery: ProductInquery = {
-    //   limit: Number(limit),
-    //   page: Number(page),
-    //   order: String(order),
-    // };
     const inquery: ProductInquery = {
-      limit: 10,
-      page: 1,
-      order: "createdAt",
+      limit: Number(limit),
+      page: Number(page),
+      order: String(order),
     };
 
     if (productCollection)

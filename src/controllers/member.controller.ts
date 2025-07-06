@@ -14,13 +14,14 @@ memberController.processSignup = async (req: Request, res: Response) => {
   try {
     console.log("processSignup");
     const input: MemberInput = req.body;
-    const result = await memberService.processSignup(input),
-      token = await authService.createToken(result);
+    const result = await memberService.processSignup(input);
+    console.log("signup result", result);
+    const token = await authService.createToken(result);
     res.cookie("accessToken", token, {
       maxAge: 24 * 3600 * 1000,
       httpOnly: false,
     });
-    await res.status(HttpCode.OK).json(result);
+    res.status(HttpCode.OK).json(result);
   } catch (err) {
     console.log("Error, processSignup", err);
     if (err instanceof Errors) res.status(err.code).json(err);
@@ -31,8 +32,9 @@ memberController.processSignup = async (req: Request, res: Response) => {
 memberController.processLogin = async (req: Request, res: Response) => {
   try {
     const loginInput: LoginInput = req.body;
-    const result = await memberService.processLogin(loginInput),
-      token = await authService.createToken(result);
+    const result = await memberService.processLogin(loginInput);
+    console.log("login result", result);
+    const token = await authService.createToken(result);
     res.cookie("accessToken", token, { maxAge: 24 * 3600 * 1000 });
 
     res.status(HttpCode.OK).json(result);
@@ -117,9 +119,10 @@ memberController.verifyAuth = async (
   try {
     const token = req.cookies["accessToken"];
     if (token) req.member = await authService.checkAuth(token);
-
-    if (!req.member)
-      throw new Errors(HttpCode.UNAUTHORIZED, Message.NOT_AUTHENTICATED);
+    console.log("token", token);
+    console.log("req.member", req.member);
+    // if (!req.member)
+    //   throw new Errors(HttpCode.UNAUTHORIZED, Message.CREATE_FAILED);
 
     next();
   } catch (err) {

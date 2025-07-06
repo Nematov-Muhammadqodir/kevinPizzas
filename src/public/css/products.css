@@ -12,7 +12,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: linear-gradient(-45deg, #110303bf, #e37813, #011c1aba, #968383);
+  /* background: linear-gradient(-45deg, #110303bf, #e37813, #011c1aba, #968383); */
   background: transparent; /* No opaque background */
   z-index: 1;
 }
