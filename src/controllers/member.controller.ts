@@ -5,6 +5,7 @@ import { ExtendedRequest, LoginInput, MemberInput } from "../libs/types/member";
 import Errors, { HttpCode, Message } from "../libs/Errors";
 import AuthService from "../moduls/Auth.service";
 import { NextFunction } from "connect";
+import { OAuth2Client } from "google-auth-library";
 
 const memberService = new MemberService();
 const authService = new AuthService();
@@ -145,6 +146,56 @@ memberController.retrieveAuth = async (
   } catch (err) {
     console.log("Error retrieveAuth", err);
     next();
+  }
+};
+
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+
+// GOOGLE AUTHENTICATION
+memberController.processGoogleLogin = async (req: Request, res: Response) => {
+  try {
+    const { token } = req.body;
+    const ticket = await client.verifyIdToken({
+      idToken: token,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+
+    const payload = ticket.getPayload();
+
+    // ✅ Validate essential fields
+    const memberNick = payload?.name;
+    const memberPhone = "GOOGLE_" + payload?.sub;
+    const memberImage = payload?.picture;
+    const googleId = payload?.sub;
+
+    if (!memberNick || !googleId || !memberImage) {
+      return res.status(400).json({ message: "Invalid Google token payload" });
+    }
+
+    // ✅ No more "possibly undefined"
+    let member = await memberService.findMemberByNick(memberNick);
+
+    if (!member) {
+      const newMemberInput: MemberInput = {
+        memberNick,
+        memberPhone,
+        memberPassword: googleId, // You could hash this later
+        memberImage,
+      };
+
+      member = await memberService.processSignup(newMemberInput);
+    }
+
+    const authToken = await authService.createToken(member);
+    res.cookie("accessToken", authToken, {
+      maxAge: 24 * 3600 * 1000,
+      httpOnly: false,
+    });
+
+    res.status(200).json(member);
+  } catch (err) {
+    console.error("Google login error:", err);
+    res.status(500).json({ message: "Google login failed" });
   }
 };
 

@@ -125,6 +125,18 @@ class MemberService {
 
     return result;
   }
+
+  public async findMemberByNick(nick: string): Promise<Member | null> {
+    try {
+      const member = await this.memberModel
+        .findOne({ memberNick: nick })
+        .lean();
+      return member;
+    } catch (err) {
+      console.log("Error, findMemberByNick", err);
+      return null;
+    }
+  }
 }
 
 export default MemberService;

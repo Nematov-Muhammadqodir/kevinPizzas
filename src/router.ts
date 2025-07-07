@@ -68,4 +68,7 @@ router.post(
   orderController.updateOrder
 );
 
+// GOOGLE AUTHENTICATION
+router.post("/member/google-login", memberController.processGoogleLogin);
+
 export default router;
