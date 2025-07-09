@@ -98,12 +98,14 @@ productController.getProduct = async (req: ExtendedRequest, res: Response) => {
 
 //USER
 productController.getAllUserProducts = async (
-  req: AdminRequest,
+  req: ExtendedRequest,
   res: Response
 ) => {
   try {
-    console.log("getAllProducts");
+    // console.log("memberId::", req.member);
+
     const { limit, page, order, productCollection, search } = req.query;
+    // const memberId = req.member._id;
 
     const inquery: ProductInquery = {
       limit: Number(limit),
@@ -115,7 +117,7 @@ productController.getAllUserProducts = async (
       inquery.productCollection = productCollection as ProductCollection;
 
     if (search) inquery.search = String(search);
-    console.log(inquery);
+
     const data = await productService.getAllProducts(inquery);
     console.log("data", data);
     res.status(HttpCode.OK).json(data);

@@ -59,7 +59,7 @@ adminController.signup = async (req: AdminRequest, res: Response) => {
     const result = await adminService.signup(input);
     req.session.member = result;
     req.session.save(() => {
-      res.status(HttpCode.OK).json(result);
+      res.redirect("/admin/product/all");
     });
   } catch (err) {
     console.log("Error, signup", err);

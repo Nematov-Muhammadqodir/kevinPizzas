@@ -4,6 +4,7 @@ import memberController from "./controllers/member.controller";
 import makeUploader from "./libs/utils/uploader";
 import productController from "./controllers/product.controller";
 import orderController from "./controllers/order.controller";
+import likeController from "./controllers/like.controller";
 
 const router = express.Router();
 
@@ -40,8 +41,12 @@ router.get(
   memberController.getTopUsers
 );
 
-//^ PRODUCTS
-router.get("/product/all", productController.getAllUserProducts);
+//*! PRODUCTS
+router.get(
+  "/product/all",
+  memberController.retrieveAuth,
+  productController.getAllUserProducts
+);
 
 router.get(
   "/product/:productId",
@@ -68,6 +73,18 @@ router.post(
   orderController.updateOrder
 );
 
+//! LIKE
+router.post(
+  "/like/toggle",
+  memberController.verifyAuth,
+  likeController.toggleLike
+);
+
+router.get(
+  "/like/allProducts",
+  memberController.verifyAuth,
+  likeController.getLikedProducts
+);
 // GOOGLE AUTHENTICATION
 router.post("/member/google-login", memberController.processGoogleLogin);
 

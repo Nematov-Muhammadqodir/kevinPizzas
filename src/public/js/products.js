@@ -83,7 +83,13 @@ function previewFileHandler(input, order) {
 
   console.log(fileType);
 
-  const validImageType = ["image/jpg", "image/jpeg", "image/png", "image/webp"];
+  const validImageType = [
+    "image/jpg",
+    "image/jpeg",
+    "image/png",
+    "image/webp",
+    "image/avif",
+  ];
 
   if (!validImageType.includes(fileType)) {
     alert(

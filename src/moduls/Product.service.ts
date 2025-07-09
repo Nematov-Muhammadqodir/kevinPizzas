@@ -1,4 +1,7 @@
-import { shapeIntoMongooseObjectId } from "../libs/config";
+import {
+  shapeIntoMongooseObjectId,
+  lookupAuthMemberLiked,
+} from "../libs/config";
 import { ProductCollection, ProductStatus } from "../libs/enums/product.enum";
 import { ViewGroup } from "../libs/enums/view.enum";
 import Errors, { HttpCode, Message } from "../libs/Errors";
@@ -88,7 +91,6 @@ class ProductService {
       let result = await this.productModel
         .findOne({
           _id: productId,
-          productStatus: ProductStatus.PAUSE,
         })
         .exec();
 

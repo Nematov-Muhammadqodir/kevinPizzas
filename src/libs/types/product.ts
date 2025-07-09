@@ -6,6 +6,12 @@ import {
   ProductVolume,
 } from "../enums/product.enum";
 
+// export interface MeLiked {
+//   memberId: ObjectId;
+//   likeRefId: ObjectId;
+//   myFavorite: boolean;
+// }
+
 export interface Product {
   _id: ObjectId;
   productStatus: ProductStatus;
@@ -19,6 +25,7 @@ export interface Product {
   productDesc?: string;
   productImages?: string;
   productViews: number;
+  productLikes: number;
   createdAt: Date;
   updatedAt: Date;
 }
